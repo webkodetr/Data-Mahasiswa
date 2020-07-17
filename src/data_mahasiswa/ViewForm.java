@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 public class ViewForm extends javax.swing.JFrame {
 
     private MahasiswaInterface mi;
+    private boolean TAG = true; // cerate
 
     /**
      * Creates new form ViewForm
@@ -25,6 +26,7 @@ public class ViewForm extends javax.swing.JFrame {
     }
 
     private void clear() {
+        TAG = true;
         tfNim.setText("");
         tfNama.setText("");
         cbJurusan.setSelectedIndex(0);
@@ -50,9 +52,11 @@ public class ViewForm extends javax.swing.JFrame {
 
     private void save() {
         if (validasi()) {
-            
-            create();
-            
+            if (TAG) {
+                create();
+            } else {
+                update();
+            }
         } else {
             JOptionPane.showMessageDialog(rootPane, "Inputan belum diisi!");
         }
@@ -76,6 +80,24 @@ public class ViewForm extends javax.swing.JFrame {
         clear();
     }
 
+    private void update() {
+        Mahasiswa m = new Mahasiswa();
+        m.setNim(Integer.valueOf(tfNim.getText().toString()));
+        m.setNama(tfNama.getText().toString());
+
+        if (rbPria.isSelected()) {
+            m.setJenis_kelamin("Pria");
+        } else {
+            m.setJenis_kelamin("Wanita");
+        }
+
+        m.setJurusan(cbJurusan.getSelectedItem().toString());
+
+        mi.update(m);
+
+        clear();
+    }
+
     private void loadData() {
         int select = tblMahasiswa.getSelectedRowCount();
         if (select > 0) {
@@ -92,6 +114,9 @@ public class ViewForm extends javax.swing.JFrame {
                     rbWanita.setSelected(true);
                 }
                 cbJurusan.setSelectedItem(tblMahasiswa.getValueAt(row, 3).toString());
+
+                TAG = false;
+                tfNim.setEnabled(false);
             }
         } else {
             JOptionPane.showMessageDialog(rootPane, "Data belum dipilih!");

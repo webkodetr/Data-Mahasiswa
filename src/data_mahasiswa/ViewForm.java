@@ -36,31 +36,44 @@ public class ViewForm extends javax.swing.JFrame {
         mi.read(tblMahasiswa);
     }
 
-    private void create() {
+    private boolean validasi() {
         if (tfNim.getText().isEmpty()
                 || tfNama.getText().isEmpty()
                 || (!rbPria.isSelected() && !rbWanita.isShowing())
                 || cbJurusan.getSelectedIndex() == 0) {
 
-            JOptionPane.showMessageDialog(rootPane, "Inputan belum diisi");
+            return false;
 
-        } else {
-            Mahasiswa m = new Mahasiswa();
-            m.setNim(Integer.valueOf(tfNim.getText().toString()));
-            m.setNama(tfNama.getText().toString());
-
-            if (rbPria.isSelected()) {
-                m.setJenis_kelamin("Pria");
-            } else {
-                m.setJenis_kelamin("Wanita");
-            }
-
-            m.setJurusan(cbJurusan.getSelectedItem().toString());
-
-            mi.create(m);
-
-            clear();
         }
+        return true;
+    }
+
+    private void save() {
+        if (validasi()) {
+            
+            create();
+            
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Inputan belum diisi!");
+        }
+    }
+
+    private void create() {
+        Mahasiswa m = new Mahasiswa();
+        m.setNim(Integer.valueOf(tfNim.getText().toString()));
+        m.setNama(tfNama.getText().toString());
+
+        if (rbPria.isSelected()) {
+            m.setJenis_kelamin("Pria");
+        } else {
+            m.setJenis_kelamin("Wanita");
+        }
+
+        m.setJurusan(cbJurusan.getSelectedItem().toString());
+
+        mi.create(m);
+
+        clear();
     }
 
     private void loadData() {
@@ -267,7 +280,7 @@ public class ViewForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        create();
+        save();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed

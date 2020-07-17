@@ -123,6 +123,31 @@ public class ViewForm extends javax.swing.JFrame {
         }
     }
 
+    private void delete() {
+        int select = tblMahasiswa.getSelectedRowCount();
+        if (select > 0) {
+            int pilihan = JOptionPane.NO_OPTION;
+            pilihan = JOptionPane.showConfirmDialog(rootPane, "Yakin ingin hapus!", "Informasi", JOptionPane.YES_NO_OPTION);
+            if (pilihan == JOptionPane.YES_OPTION) {
+                int row = tblMahasiswa.getSelectedRow();
+
+                int nim = Integer.valueOf(tblMahasiswa.getValueAt(row, 0).toString());
+                mi.delete(nim);
+                clear();
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Data belum dipilih!");
+        }
+    }
+
+    private void search() {
+        if (tfPencarian.getText().isEmpty()) {
+            clear();
+        } else {
+            mi.search(tblMahasiswa, Integer.valueOf(tfPencarian.getText()));
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -211,6 +236,11 @@ public class ViewForm extends javax.swing.JFrame {
         });
 
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         tblMahasiswa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -226,6 +256,12 @@ public class ViewForm extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblMahasiswa);
 
         jLabel7.setText("Pencarian");
+
+        tfPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfPencarianKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -312,6 +348,16 @@ public class ViewForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         loadData();
     }//GEN-LAST:event_btnUbahActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:
+        delete();
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased
+        // TODO add your handling code here:
+        search();
+    }//GEN-LAST:event_tfPencarianKeyReleased
 
     /**
      * @param args the command line arguments
